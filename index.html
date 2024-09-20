@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sunset Quest: A Choose Your Own Adventure Game</title>
+    <style>
+        body {
+            background: linear-gradient(to right, orange, yellow, red, pink, purple);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #game {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(0,0,0,0.5);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        #sceneImage {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <h1>Sunset Quest</h1>
+        <img id="sceneImage" src="" alt="Scene Image">
+        <p id="story"></p>
+        <div id="choices"></div>
+    </div>
+
+    <script>
+        const scenes = {
+            start: {
+                text: "You find yourself at the edge of a serene landscape, the sky ablaze with hues of orange, yellow, and red transitioning into pink and purple. A dark green tree with flowing branches stands to your right, and a rocky formation looms to your left. A small bird flies overhead. Do you wish to follow the bird or explore the tree?",
+                image: "img/scene_start.jpg",
+                choices: [
+                    { text: "Follow the bird", nextScene: "followBird" },
+                    { text: "Explore the tree", nextScene: "exploreTree" }
+                ]
+            },
+            followBird: {
+                text: "You decide to follow the bird. It leads you towards the glowing horizon where the sun is partially visible. As you approach, you notice a path leading into the mountains. Do you take the mountain path or continue following the bird?",
+                image: "img/scene_followBird.jpg",
+                choices: [
+                    { text: "Take the mountain path", nextScene: "mountainPath" },
+                    { text: "Continue following the bird", nextScene: "birdFlight" }
+                ]
+            },
+            exploreTree: {
+                text: "You walk towards the abstract tree. Its branches seem to whisper ancient secrets. As you touch the bark, you feel a surge of energy. Do you climb the tree or listen to the whispers?",
+                image: "img/scene_exploreTree.jpg",
+                choices: [
+                    { text: "Climb the tree", nextScene: "climbTree" },
+                    { text: "Listen to the whispers", nextScene: "listenWhispers" }
+                ]
+            },
+            mountainPath: {
+                text: "You take the path into the mountains. The air grows cooler, and the colors of the sky deepen. Suddenly, you reach a cave entrance. Do you enter the cave or turn back?",
+                image: "img/scene_mountainPath.jpg",
+                choices: [
+                    { text: "Enter the cave", nextScene: "enterCave" },
+                    { text: "Turn back", nextScene: "turnBack" }
+                ]
+            },
+            birdFlight: {
+                text: "You continue to follow the bird, but it flies higher until it disappears into the sun. You're left standing alone as the sky darkens. Do you wait for the bird to return or seek shelter?",
+                image: "img/scene_birdFlight.jpg",
+                choices: [
+                    { text: "Wait for the bird", nextScene: "waitBird" },
+                    { text: "Seek shelter", nextScene: "seekShelter" }
+                ]
+            },
+            climbTree: {
+                text: "You climb the tree and reach a vantage point where the entire landscape unfolds before you. You see a hidden valley behind the rocky formation. Do you descend towards the valley or stay in the tree?",
+                image: "img/scene_climbTree.jpg",
+                choices: [
+                    { text: "Descend to the valley", nextScene: "hiddenValley" },
+                    { text: "Stay in the tree", nextScene: "stayTree" }
+                ]
+            },
+            listenWhispers: {
+                text: "You listen closely, and the whispers reveal a riddle about the sun and moon. Solving it could grant you a wish. Do you attempt to solve the riddle or ignore it?",
+                image: "img/scene_listenWhispers.jpg",
+                choices: [
+                    { text: "Solve the riddle", nextScene: "solveRiddle" },
+                    { text: "Ignore it", nextScene: "ignoreRiddle" }
+                ]
+            },
+            enterCave: {
+                text: "Inside the cave, you find glowing crystals that illuminate ancient drawings. The drawings depict a portal. Do you touch the crystals or study the drawings?",
+                image: "img/scene_enterCave.jpg",
+                choices: [
+                    { text: "Touch the crystals", nextScene: "touchCrystals" },
+                    { text: "Study the drawings", nextScene: "studyDrawings" }
+                ]
+            },
+            turnBack: {
+                text: "You decide to turn back, but the path has vanished. The landscape shifts, and you're now in an unfamiliar place. Do you call out for help or try to find a new path?",
+                image: "img/scene_turnBack.jpg",
+                choices: [
+                    { text: "Call out for help", nextScene: "callHelp" },
+                    { text: "Find a new path", nextScene: "newPath" }
+                ]
+            },
+            waitBird: {
+                text: "You wait patiently, and as night falls, the bird returns, transforming into a luminous creature. It offers to guide you to a place of wonder. Do you accept its offer?",
+                image: "img/scene_waitBird.jpg",
+                choices: [
+                    { text: "Accept the offer", nextScene: "acceptOffer" },
+                    { text: "Decline and stay", nextScene: "declineOffer" }
+                ]
+            },
+            seekShelter: {
+                text: "You seek shelter and find a small cabin near the rocky formation. Inside, there's a warm fire and a mysterious book. Do you read the book or rest by the fire?",
+                image: "img/scene_seekShelter.jpg",
+                choices: [
+                    { text: "Read the book", nextScene: "readBook" },
+                    { text: "Rest by the fire", nextScene: "restFire" }
+                ]
+            },
+            // Additional scenes can be added here
+            // Endings
+            acceptOffer: {
+                text: "You accept the creature's offer and are taken to a realm of endless sunsets. You've found a place of eternal beauty. The End.",
+                image: "img/scene_acceptOffer.jpg",
+                choices: []
+            },
+            declineOffer: {
+                text: "You decline and the creature vanishes. You're left alone as the world around you fades. The adventure ends here. The End.",
+                image: "img/scene_declineOffer.jpg",
+                choices: []
+            },
+            // Additional endings can be added here
+        };
+
+        function startGame() {
+            showScene('start');
+        }
+
+        function showScene(sceneKey) {
+            const scene = scenes[sceneKey];
+            document.getElementById('story').innerText = scene.text;
+            document.getElementById('sceneImage').src = scene.image;
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+
+            if (scene.choices.length === 0) {
+                const restartButton = document.createElement('button');
+                restartButton.innerText = 'Restart Game';
+                restartButton.onclick = startGame;
+                choicesDiv.appendChild(restartButton);
+                return;
+            }
+
+            scene.choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.innerText = choice.text;
+                button.onclick = () => showScene(choice.nextScene);
+                choicesDiv.appendChild(button);
+            });
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
+
