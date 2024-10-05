@@ -269,7 +269,19 @@
         sheepImg.onload = function() {
             update();
         };
-    </script>
+    
+        window.onload = function() {
+            document.getElementById('jumpButton').addEventListener('click', function() {
+                if (isGameOver) {
+                    resetGame();
+                } else {
+                    handleJump();
+                }
+            });
+        };
+</script>
+
+        <button id="jumpButton" style="font-size:20px;padding:10px;margin:20px auto;display:block;">JUMP</button>
 </body>
 </html>
 
